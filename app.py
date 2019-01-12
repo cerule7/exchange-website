@@ -8,6 +8,8 @@ import logging
 from logging import Formatter, FileHandler
 from forms import *
 import os
+import json
+from pymongo import MongoClient
 
 #----------------------------------------------------------------------------#
 # App Config.
@@ -15,6 +17,11 @@ import os
 
 app = Flask(__name__)
 app.config.from_object('config')
+
+#open mongodb connection
+client = MongoClient("mongodb+srv://admin:rutgers1@studentinfo-eoita.azure.mongodb.net/test?retryWrites=true")
+db = client.test
+
 #db = SQLAlchemy(app)
 
 # Automatically tear down SQLAlchemy.
@@ -45,13 +52,15 @@ def login_required(test):
 def home():
     return render_template('pages/home.html')
 
-
 @app.route('/about')
 def about():
     return render_template('pages/about.html')
  
-@app.route('/signup')
+@app.route('/signup', methods=['POST', 'GET'])
 def signup():
+    if request.method == 'POST': #successful form post
+        results = request.get_json()
+        db.inventory.insert(results) #load form results into mongodb
     return render_template('pages/register.html')
 
 @app.route('/login')
