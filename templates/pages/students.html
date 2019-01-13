@@ -1,0 +1,51 @@
+{% extends 'layouts/main.html' %}
+{% block title %}Students{% endblock %}
+{% block content %}
+
+<div class="page-header">
+  <h1>Students</h1>
+</div>
+
+<table border = 2>
+         <thead>
+            <td>Name</td>
+            <td>Email</td>
+            <td>RUID</td>
+            <td>Class Year</td>
+            <td>Languages to Learn</td>
+            <td>Languages to Share</td>
+            <td>Reason To Participate</td>
+            <td>Major(s)</td>
+            <td>Minor(s)</td>
+            <td>Hobbies</td>
+            <td>Language Courses</td>
+            <td>Previously Participated</td>
+            <td>Name of Exchange Partner</td>
+            <td>Exchange Completed</td>
+            <td>Reason For Uncompleted Exchange</td>
+            <td>Unable To Get Partner</td>
+         </thead>
+         
+         {% for row in rows %}
+            <tr>
+               <td>{{row["name"]}}</td>
+               <td>{{row["email"]}}</td>
+               <td>{{row["ruid"]}}</td>
+               <td>{{row["year"]}}</td>
+               <td>{{row["sl1"]}} {{row["sl2"]}} {{row["sl3"]}}</td>
+               <td>{{row["ll1"]}} {{row["ll2"]}} {{row["ll3"]}}</td>
+               <td>{{row["majors"]}}</td>
+               <td>{{row["minors"]}}</td>
+               <td>{{row["why"]}}</td>
+               <td>{{row["hobbies"]}}</td>
+               <td>{{row["courses"]}}</td>
+               <td>{{row["prevp"]}}</td>
+               <td>{{row["prevname"]}}</td>
+               <td>{{row["wascomplete"]}}</td>
+               <td>{{row["uncomplete_exp"]}}</td>
+               <td>{{row["unableprev"]}}</td>
+            </tr>
+         {% endfor %}
+      </table>
+
+{% endblock %}

@@ -10,9 +10,10 @@ from forms import *
 import os
 import json
 from pymongo import MongoClient
+from pprint import pprint
 
 #----------------------------------------------------------------------------#
-# App Config.
+# App Config
 #----------------------------------------------------------------------------#
 
 app = Flask(__name__)
@@ -63,6 +64,11 @@ def signup():
         db.inventory.insert(results) #load form results into mongodb
     return render_template('pages/register.html')
 
+@app.route('/view_students', methods=['POST', 'GET'])
+def students():
+    rows = db.inventory.find({})
+    return render_template('pages/students.html', rows=rows)
+
 @app.route('/login')
 def login():
     form = LoginForm(request.form)
@@ -79,8 +85,7 @@ def forgot():
     form = ForgotForm(request.form)
     return render_template('forms/forgot.html', form=form)
 
-# Error handlers.
-
+# Error handlers
 
 @app.errorhandler(500)
 def internal_error(error):
