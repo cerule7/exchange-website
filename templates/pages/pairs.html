@@ -1,0 +1,38 @@
+{% extends 'layouts/main.html' %}
+{% block title %}Pairs{% endblock %}
+{% block content %}
+
+<div class="page-header">
+  <h1>Pairs</h1>
+</div>
+
+<table border = 2>
+   <thead>
+      <td>People</td>
+      <td>Languages</td>
+      <td>Make Pair</td>
+   </thead>
+
+   {% for pair in pairs %}
+      <tr>
+         <td>{{pair.student1.name}} and {{pair.student2.name}}</td>
+         <td>{{pair.language1}} and {{pair.language2}}</td>
+         <td><button onclick="makePair(pair.student1.name, pair.student2.name)">Click me</button></td>
+      </tr>
+   {% endfor %}
+</table>
+
+<script>
+   function makePair(student1, student2){
+     console.log("make pair " + student2.name + " & " + student1.name);
+     var xhr = new XMLHttpRequest();
+     xhr.open("POST", "http://127.0.0.1:5000/make_pairs");
+     xhr.setRequestHeader('Content-Type', 'text/plain');
+     xhr.send(student1.name + "&" + student2.name);
+     $(this).replace("Pair made!")
+   }
+</script>
+
+{% endblock %}
+
+

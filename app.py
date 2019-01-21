@@ -7,10 +7,8 @@ from flask import Flask, render_template, request
 import logging
 from logging import Formatter, FileHandler
 from forms import *
-import os
-import json
 from pymongo import MongoClient
-from pprint import pprint
+from alg import *
 
 #----------------------------------------------------------------------------#
 # App Config
@@ -68,6 +66,22 @@ def signup():
 def students():
     rows = db.inventory.find({})
     return render_template('pages/students.html', rows=rows)
+
+@app.route('/make_pairs', methods=['POST', 'GET'])
+def make():
+    if request.method == 'POST':
+        names = request.split('&')
+        s1 = names[0]
+        s2 = names[1]
+        db.inventory.update_one(
+           {"name": s1},
+           {"$set": {"partner": s2}}
+        )
+        db.inventory.update_one(
+           {"name": s2},
+           {"$set": {"partner": s1}}
+        )
+    return render_template('pages/pairs.html', pairs=make_pairs())
 
 @app.route('/login')
 def login():
