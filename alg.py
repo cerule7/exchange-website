@@ -14,18 +14,16 @@ class Pair:
 	def __init__(self, student1, student2):
 		self.student1 = student1
 		self.student2 = student2
-		langs = canMatch(student1, student2)
+		langs = canMatch(student1, student2) #the languages they will exchange
 		self.language1 = langs[0]
 		self.language2 = langs[1]
 
-def canMatch(s, ss):
+def canMatch(s, ss): #checks if two students can share/learn from each other
 	langs = [] 
 	for l in s.learn_langs:
 		if canLearn(s, l) and canShare(ss, l):
-			#print("EDGE MADE BETWEEN " + s.name + " (" + s.learn_langs.get(l) + ") AND " + ss.name + " (" + ss.share_langs.get(l) + ") FOR " + l)
 			for j in ss.learn_langs:
 				if j != l and canLearn(ss, j) and canShare(s, j):
-					#print("EDGE MADE BETWEEN " + s.name + " (" + s.share_langs.get(l) + ") AND " + ss.name + " (" + ss.learn_langs.get(j) + ") FOR " + j + " AND " + l)
 					langs.append(j)
 					langs.append(l)
 	return langs
@@ -34,10 +32,10 @@ def canLearn(s, lang):
 	return (lang in s.learn_langs and lang != 'None')
 
 def canShare(s, lang):
-	return (lang in s.share_langs and s.share_langs.get(lang) == 'fluent' or s.share_langs.get(lang) == 'advanced')
+	return (lang in s.share_langs and (s.share_langs.get(lang) == 'fluent' or s.share_langs.get(lang) == 'advanced'))
 
-def weight(s, ss):
-	total = 1
+def weight(s, ss): #adds +2 weight for each partner who has not previously participated 
+	total = 1 #default
 	if(s.prev_part == 'did_not'):
 		total += 2
 	if(ss.prev_part == 'did_not'):
@@ -45,9 +43,11 @@ def weight(s, ss):
 	return total
 
 def make_pairs():
+	#creates connection to mongodb database
 	client = MongoClient("mongodb+srv://admin:rutgers1@studentinfo-eoita.azure.mongodb.net/test?retryWrites=true")
 	db = client.test
 
+	# for mass updating records
 	# db.inventory.update_many(
 	# 	{"$or" : [
 	# 		{"partner": {"$exists": False}},
@@ -75,6 +75,7 @@ def make_pairs():
 
 	G = Graph()
 
+	#adds students who can potentially be partners to the graph
 	for s in students:
 		if(s.partner == 'None'):
 			for ss in students:
@@ -85,7 +86,8 @@ def make_pairs():
 
 	#s = sorted(max_weight_matching(G))
 	#print('{' + ', '.join(map(lambda t: ': '.join(map(repr, t)), s)) + '}')
-	pairset = max_weight_matching(G, maxcardinality=False)
+	
+	pairset = max_weight_matching(G, maxcardinality=True) #result of max weighting algorithm 
 	pairs = []
 	for p in pairset:
 		pairs.append(Pair(p[0], p[1]))
