@@ -10,14 +10,14 @@
    <thead>
       <td>People</td>
       <td>Languages</td>
-      <td>Make Pair</td>
+      <td></td>
    </thead>
 
    {% for pair in pairs %}
       <tr>
          <td>{{pair.student1.name}} and {{pair.student2.name}}</td>
          <td>{{pair.language1}} and {{pair.language2}}</td>
-         <td><button onclick="makePair(pair.student1.name, pair.student2.name)">Click me</button></td>
+         <td><button onclick="makePair(pair.student1.name, pair.student2.name)">Make Pair</button></td>
       </tr>
    {% endfor %}
 </table>
