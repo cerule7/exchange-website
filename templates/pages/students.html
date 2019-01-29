@@ -14,17 +14,17 @@
 
 
 <body>
-  <div id="myGrid" style="height: 600px; width:100%;" class="ag-theme-balham"></div>
+  <div id="myGrid" style="height:100%; width:100%;" class="ag-theme-balham"></div>
 
   <script type="text/javascript" charset="utf-8">
     // specify the columns
     var columnDefs = [
-      {headerName: "Name", field: "name", sortable: true, filter: true},
-      {headerName: "Class", field: "year", sortable: true, filter: true},
-      {headerName: "Email", field: "email", sortable: true, filter: true},
-      {headerName: "Sharing Languages", field: "share_langs", sortable: true, filter: true},
-      {headerName: "Learning Languages", field: "learn_langs", sortable: true, filter: true},
-      {headerName: "Previously Participated", field: "prev_p", sortable: true, filter: true},
+      {headerName: "Name", field: "name", sortable: true, filter: true, sort: 'asc', unSortIcon: true},
+      {headerName: "Class", field: "year", sortable: true, filter: true, unSortIcon: true},
+      {headerName: "Email", field: "email", sortable: true, filter: true, unSortIcon: true},
+      {headerName: "Sharing Languages", field: "share_langs", sortable: true, filter: true, unSortIcon: true},
+      {headerName: "Learning Languages", field: "learn_langs", sortable: true, filter: true, unSortIcon: true},
+      {headerName: "Previously Participated", field: "prev_p", sortable: true, filter: true, unSortIcon: true},
     ];
     
     // specify the data
@@ -37,7 +37,7 @@
       },
       columnDefs: columnDefs,
       rowData: rowData,
-       onFirstDataRendered: autoSizeAll
+      onFirstDataRendered: autoSizeAll
     };
 
   // lookup the container we want the Grid to use
