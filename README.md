@@ -4,6 +4,7 @@
 
 
 Created with:
-- Flask and Python 3
+- Flask, Python and MongoDB
 - [flask-boilerplate](https://github.com/realpython/flask-boilerplate)
 - [surveyJS](https://surveyjs.io/)
+- [ag-Grid](https://www.ag-grid.com/)
