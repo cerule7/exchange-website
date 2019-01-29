@@ -77,12 +77,16 @@ def students():
             slist += ", " + r['sl2']
             if(r['sl3'] != 'None'):
                 slist += ", " + r['sl3']
+        has_p = 'Yes'
+        if(r['prevp'] == 'did_not'):
+            has_p = 'No'
         student = {
         'name': r['name'],
         'year' : r['year'],
         'email': r['email'],
         'learn_langs': llist,
-        'share_langs': slist
+        'share_langs': slist,
+        'prev_p': has_p
         }
         rowslist.append(student)
     return render_template('pages/students.html', rows=rowslist)
