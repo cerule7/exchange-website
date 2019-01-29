@@ -93,20 +93,30 @@ def students():
 
 @app.route('/make_pairs', methods=['POST', 'GET'])
 def make():
-    if request.method == 'POST':
-        print(request)
-        names = request.split('&')
-        s1 = names[0]
-        s2 = names[1]
-        db.inventory.update_one(
-           {"name": s1},
-           {"$set": {"partner": s2}}
-        )
-        db.inventory.update_one(
-           {"name": s2},
-           {"$set": {"partner": s1}}
-        )
-    return render_template('pages/pairs.html', pairs=make_pairs())
+    # if request.method == 'POST':
+        # print(request)
+        # names = request.split('&')
+        # s1 = names[0]
+        # s2 = names[1]
+        # db.inventory.update_one(
+        #    {"name": s1},
+        #    {"$set": {"partner": s2}}
+        # )
+        # db.inventory.update_one(
+        #    {"name": s2},
+        #    {"$set": {"partner": s1}}
+        # )
+    pairlist = []
+    pairs = make_pairs()
+    for pair in pairs:
+        langs = pair.language1 + " & " + pair.language2
+        names = pair.student1.name + " & " + pair.student2.name
+        p = {
+            'languages' : langs,
+            'names' : names
+        }
+        pairlist.append(p)
+    return render_template('pages/pairs.html', pairs=pairlist)
 
 @app.route('/login')
 def login():

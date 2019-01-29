@@ -2,36 +2,68 @@
 {% block title %}Pairs{% endblock %}
 {% block content %}
 
+<head>
+  <script src="https://unpkg.com/ag-grid-community/dist/ag-grid-community.min.noStyle.js"></script>
+  <link rel="stylesheet" href="https://unpkg.com/ag-grid-community/dist/styles/ag-grid.css">
+  <link rel="stylesheet" href="https://unpkg.com/ag-grid-community/dist/styles/ag-theme-balham.css">
+</head>
+
 <div class="page-header">
   <h1>Pairs</h1>
 </div>
 
-<table border = 2>
-   <thead>
-      <td>People</td>
-      <td>Languages</td>
-      <td></td>
-   </thead>
+<body>
+  <div id="myGrid" style="height:100%; width:100%;" class="ag-theme-balham"></div>
 
-   {% for pair in pairs %}
-      <tr>
-         <td>{{pair.student1.name}} and {{pair.student2.name}}</td>
-         <td>{{pair.language1}} and {{pair.language2}}</td>
-         <td><button onclick="makePair(pair.student1.name, pair.student2.name)">Make Pair</button></td>
-      </tr>
-   {% endfor %}
-</table>
+  <script type="text/javascript" charset="utf-8">
+    // specify the columns
+    var columnDefs = [
+      {headerName: "Names", field: "names", sortable: true, filter: true, sort: 'asc', unSortIcon: true, checkboxSelection: true},
+      {headerName: "Languages", field: "languages", sortable: true, filter: true, unSortIcon: true},
+    ];
+    
+    // specify the data
+    var rowData = JSON.parse('{{pairs|tojson}}');
+    
+    // let the grid know which columns and what data to use
+    var gridOptions = {
+      defaultColDef: {
+        resizable: true
+      },
+      columnDefs: columnDefs,
+      rowData: rowData,
+      onFirstDataRendered: autoSizeAll,
+      rowSelection: 'multiple'
+    };
 
-<script>
-   function makePair(student1, student2){
-     console.log("make pair " + student2.name + " & " + student1.name);
-     var xhr = new XMLHttpRequest();
-     xhr.open("POST", "http://127.0.0.1:5000/make_pairs");
-     xhr.setRequestHeader('Content-Type', 'text/plain');
-     xhr.send(student1.name + "&" + student2.name);
-     $(this).replace("Pair made!")
+  // lookup the container we want the Grid to use
+  var eGridDiv = document.querySelector('#myGrid');
+
+  // create the grid passing in the div to use together with the columns & data we want to use
+  new agGrid.Grid(eGridDiv, gridOptions);
+
+   function autoSizeAll() {
+       var allColumnIds = [];
+       gridOptions.columnApi.getAllColumns().forEach(function(column) {
+           allColumnIds.push(column.colId);
+       });
+       gridOptions.columnApi.autoSizeColumns(allColumnIds);
    }
-</script>
+
+  </script>
+
+  <button onclick="getSelectedRows()">Get Selected Rows</button>
+
+  <script type="text/javascript">
+   function getSelectedRows() {
+       var selectedNodes = gridOptions.api.getSelectedNodes()  
+       var selectedData = selectedNodes.map(function(node) { return node.data })
+       var selectedDataStringPresentation = selectedData.map( function(node) { return node.make + ' ' + node.model }).join(', ')
+       alert('Selected nodes: ' + selectedDataStringPresentation);
+   }
+  </script>
+
+</body>
 
 {% endblock %}
 
