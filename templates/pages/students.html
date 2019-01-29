@@ -20,7 +20,7 @@
     // specify the columns
     var columnDefs = [
       {headerName: "Name", field: "name", sortable: true, filter: true},
-      {headerName: "Class Year", field: "year", sortable: true, filter: true},
+      {headerName: "Class", field: "year", sortable: true, filter: true},
       {headerName: "Email", field: "email", sortable: true, filter: true},
       {headerName: "Languages to Share", field: "share_langs", sortable: true, filter: true},
       {headerName: "Languages to Learn", field: "learn_langs", sortable: true, filter: true},
@@ -31,8 +31,12 @@
     
     // let the grid know which columns and what data to use
     var gridOptions = {
+    	defaultColDef: {
+        resizable: true
+      },
       columnDefs: columnDefs,
-      rowData: rowData
+      rowData: rowData,
+       onFirstDataRendered: autoSizeAll
     };
 
   // lookup the container we want the Grid to use
@@ -40,6 +44,14 @@
 
   // create the grid passing in the div to use together with the columns & data we want to use
   new agGrid.Grid(eGridDiv, gridOptions);
+
+	function autoSizeAll() {
+	    var allColumnIds = [];
+	    gridOptions.columnApi.getAllColumns().forEach(function(column) {
+	        allColumnIds.push(column.colId);
+	    });
+	    gridOptions.columnApi.autoSizeColumns(allColumnIds);
+	}
 
   </script>
 </body>
