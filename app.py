@@ -65,11 +65,32 @@ def signup():
 @app.route('/view_students', methods=['POST', 'GET'])
 def students():
     rows = db.inventory.find({})
-    return render_template('pages/students.html', rows=rows)
+    rowslist = []
+    for r in rows:
+        llist = r['ll1']
+        if(r['ll2'] != 'None'):
+            llist += ", " + r['ll2']
+            if(r['ll3'] != 'None'):
+                llist += ", " + r['ll3']
+        slist = r['sl1']
+        if(r['sl2'] != 'None'):
+            slist += ", " + r['sl2']
+            if(r['sl3'] != 'None'):
+                slist += ", " + r['sl3']
+        student = {
+        'name': r['name'],
+        'year' : r['year'],
+        'email': r['email'],
+        'learn_langs': llist,
+        'share_langs': slist
+        }
+        rowslist.append(student)
+    return render_template('pages/students.html', rows=rowslist)
 
 @app.route('/make_pairs', methods=['POST', 'GET'])
 def make():
     if request.method == 'POST':
+        print(request)
         names = request.split('&')
         s1 = names[0]
         s2 = names[1]

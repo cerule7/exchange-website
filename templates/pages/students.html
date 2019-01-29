@@ -2,50 +2,46 @@
 {% block title %}Students{% endblock %}
 {% block content %}
 
+<head>
+  <script src="https://unpkg.com/ag-grid-community/dist/ag-grid-community.min.noStyle.js"></script>
+  <link rel="stylesheet" href="https://unpkg.com/ag-grid-community/dist/styles/ag-grid.css">
+  <link rel="stylesheet" href="https://unpkg.com/ag-grid-community/dist/styles/ag-theme-balham.css">
+</head>
+
 <div class="page-header">
   <h1>Students</h1>
 </div>
 
-<table border = 2>
-         <thead>
-            <td>Name</td>
-            <td>Email</td>
-            <td>RUID</td>
-            <td>Class Year</td>
-            <td>Languages to Learn</td>
-            <td>Languages to Share</td>
-            <td>Reason To Participate</td>
-            <td>Major(s)</td>
-            <td>Minor(s)</td>
-            <td>Hobbies</td>
-            <td>Language Courses</td>
-            <td>Previously Participated</td>
-            <td>Name of Exchange Partner</td>
-            <td>Exchange Completed</td>
-            <td>Reason For Uncompleted Exchange</td>
-            <td>Unable To Get Partner</td>
-         </thead>
-         
-         {% for row in rows %}
-            <tr>
-               <td>{{row["name"]}}</td>
-               <td>{{row["email"]}}</td>
-               <td>{{row["ruid"]}}</td>
-               <td>{{row["year"]}}</td>
-               <td>{{row["sl1"]}} {{row["sl2"]}} {{row["sl3"]}}</td>
-               <td>{{row["ll1"]}} {{row["ll2"]}} {{row["ll3"]}}</td>
-               <td>{{row["why"]}}</td>
-               <td>{{row["majors"]}}</td>
-               <td>{{row["minors"]}}</td>
-               <td>{{row["hobbies"]}}</td>
-               <td>{{row["courses"]}}</td>
-               <td>{{row["prevp"]}}</td>
-               <td>{{row["prevname"]}}</td>
-               <td>{{row["wascomplete"]}}</td>
-               <td>{{row["uncomplete_exp"]}}</td>
-               <td>{{row["unableprev"]}}</td>
-            </tr>
-         {% endfor %}
-      </table>
+
+<body>
+  <div id="myGrid" style="height: 600px;width:1100px;" class="ag-theme-balham"></div>
+
+  <script type="text/javascript" charset="utf-8">
+    // specify the columns
+    var columnDefs = [
+      {headerName: "Name", field: "name", sortable: true, filter: true},
+      {headerName: "Class Year", field: "year", sortable: true, filter: true},
+      {headerName: "Email", field: "email", sortable: true, filter: true},
+      {headerName: "Languages to Share", field: "share_langs", sortable: true, filter: true},
+      {headerName: "Languages to Learn", field: "learn_langs", sortable: true, filter: true},
+    ];
+    
+    // specify the data
+    var rowData = JSON.parse('{{rows|tojson}}');
+    
+    // let the grid know which columns and what data to use
+    var gridOptions = {
+      columnDefs: columnDefs,
+      rowData: rowData
+    };
+
+  // lookup the container we want the Grid to use
+  var eGridDiv = document.querySelector('#myGrid');
+
+  // create the grid passing in the div to use together with the columns & data we want to use
+  new agGrid.Grid(eGridDiv, gridOptions);
+
+  </script>
+</body>
 
 {% endblock %}
