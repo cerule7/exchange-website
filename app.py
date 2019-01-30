@@ -67,29 +67,34 @@ def students():
     rows = db.inventory.find({})
     rowslist = []
     for r in rows:
-        llist = r['ll1']
-        if(r['ll2'] != 'None'):
-            llist += ", " + r['ll2']
-            if(r['ll3'] != 'None'):
-                llist += ", " + r['ll3']
-        slist = r['sl1']
-        if(r['sl2'] != 'None'):
-            slist += ", " + r['sl2']
-            if(r['sl3'] != 'None'):
-                slist += ", " + r['sl3']
-        has_p = 'Yes'
+        llist = [r['ll1'], r['ll2'], r['ll3']]
+        llist[:] =  [x for x in llist if x != 'None']
+        llist.sort()
+        slist = [r['sl1'], r['sl2'], r['sl3']]
+        slist[:] =  [x for x in slist if x != 'None']
+        slist.sort()
         if(r['prevp'] == 'did_not'):
             has_p = 'No'
         student = {
         'name': r['name'],
         'year' : r['year'],
         'email': r['email'],
-        'learn_langs': llist,
-        'share_langs': slist,
+        'learn_langs': make_string(llist),
+        'share_langs': make_string(slist),
         'prev_p': has_p
         }
         rowslist.append(student)
     return render_template('pages/students.html', rows=rowslist)
+
+def make_string(langs):
+    res = ''
+    for i in range(len(langs)):
+        if(i + 1 < len(langs)):
+            res += langs[i] + ', '
+        else:
+            res += langs[i]
+    return res
+
 
 @app.route('/make_pairs', methods=['POST', 'GET'])
 def make():
