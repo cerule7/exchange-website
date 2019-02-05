@@ -73,15 +73,16 @@ def students():
         slist = [r['sl1'], r['sl2'], r['sl3']]
         slist[:] =  [x for x in slist if x != 'None']
         slist.sort()
-        if(r['prevp'] == 'did_not'):
-            has_p = 'No'
+        # if(r['prevp'] == 'did_not'):
+        #     has_p = 'No'
         student = {
         'name': r['name'],
         'year' : r['year'],
         'email': r['email'],
         'learn_langs': make_string(llist),
         'share_langs': make_string(slist),
-        'prev_p': has_p
+        # 'prev_p': has_p,
+        'partner': r['partner']
         }
         rowslist.append(student)
     return render_template('pages/students.html', rows=rowslist)
@@ -98,19 +99,20 @@ def make_string(langs):
 
 @app.route('/make_pairs', methods=['POST', 'GET'])
 def make():
-    # if request.method == 'POST':
-        # print(request)
-        # names = request.split('&')
-        # s1 = names[0]
-        # s2 = names[1]
-        # db.inventory.update_one(
-        #    {"name": s1},
-        #    {"$set": {"partner": s2}}
-        # )
-        # db.inventory.update_one(
-        #    {"name": s2},
-        #    {"$set": {"partner": s1}}
-        # )
+    if request.method == 'POST':
+        results = request.get_json()
+        for r in results:
+            names = r['names'].split('&')
+            s1 = names[0][:(len(names[0])-1)]
+            s2 = names[1][1:]
+            db.inventory.update(
+               {"name": s1},
+               {"$set": {"partner": s2}}
+            )
+            db.inventory.update(
+               {"name": s2},
+               {"$set": {"partner": s1}}
+            )
     pairlist = []
     pairs = make_pairs()
     for pair in pairs:

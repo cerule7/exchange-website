@@ -13,6 +13,9 @@
 </div>
 
 <body>
+
+   <p> Check the boxes next to the pairs you'd like to approve, then click the 'Make Pairs' button. Click the arrows next to each column to sort pairs; click the ≡ icon to search for terms. </p>
+
   <div id="myGrid" style="height:100%; width:100%;" class="ag-theme-balham"></div>
 
   <script type="text/javascript" charset="utf-8">
@@ -51,15 +54,20 @@
    }
 
   </script>
-
-  <button onclick="getSelectedRows()">Get Selected Rows</button>
+  <p></p>
+  <p> <button onclick="getSelectedRows()">Make Pairs</button> </p>
 
   <script type="text/javascript">
    function getSelectedRows() {
        var selectedNodes = gridOptions.api.getSelectedNodes()  
-       var selectedData = selectedNodes.map(function(node) { return node.data })
-       var selectedDataStringPresentation = selectedData.map( function(node) { return node.make + ' ' + node.model }).join(', ')
-       alert('Selected nodes: ' + selectedDataStringPresentation);
+       var result = selectedNodes.map(function(node) { console.log(node.data); return node.data })
+      // console.log("result: " + JSON.stringify(result));
+       var xhr = new XMLHttpRequest();
+       xhr.open("POST", "http://127.0.0.1:5000/make_pairs");
+       xhr.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
+       // send the collected data as JSON
+       xhr.send(JSON.stringify(result));
+       location.reload();
    }
   </script>
 

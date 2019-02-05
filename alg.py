@@ -46,17 +46,8 @@ def make_pairs():
 	#creates connection to mongodb database
 	client = MongoClient("mongodb+srv://admin:rutgers1@studentinfo-eoita.azure.mongodb.net/test?retryWrites=true")
 	db = client.test
-
-	# for mass updating records
-	# db.inventory.update_many(
-	# 	{"$or" : [
-	# 		{"partner": {"$exists": False}},
-	# 		{"partner": None},
-	# 	]},
-	#    {"$set": {"partner": "None"}}
-	# )
-
-	rows = db.inventory.find({})
+	
+	rows = db.inventory.find({'partner':'None'})
 
 	students = []
 
@@ -77,12 +68,10 @@ def make_pairs():
 
 	#adds students who can potentially be partners to the graph
 	for s in students:
-		if(s.partner == 'None'):
-			for ss in students:
-				if(ss.partner == 'None'):
-					l = canMatch(s, ss)
-					if(s != ss and len(l) != 0):
-						G.add_edge(s, ss, weight=weight(s, ss))
+		for ss in students:
+			l = canMatch(s, ss)
+			if(s != ss and len(l) != 0):
+				G.add_edge(s, ss, weight=weight(s, ss))
 
 	#s = sorted(max_weight_matching(G))
 	#print('{' + ', '.join(map(lambda t: ': '.join(map(repr, t)), s)) + '}')
@@ -94,7 +83,7 @@ def make_pairs():
 	return pairs
 
 
-pairs = make_pairs()
-for p in pairs:
-	print(p.student1.name + " & " + p.student2.name)
-	print(p.language1 + " & " + p.language2)
+# pairs = make_pairs()
+# for p in pairs:
+# 	print(p.student1.name + " & " + p.student2.name)
+# 	print(p.language1 + " & " + p.language2)
