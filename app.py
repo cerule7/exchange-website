@@ -63,31 +63,6 @@ def signup():
         update()
     return render_template('pages/register.html')
 
-def update():
-    db.inventory.update_many(
-    {"$or" : [
-        {"ll2": {"$exists": False}},
-        {"ll2": None},
-    ]},
-    {"$set": {"ll2": "None", "lp2": "None", "ll3": "None", "lp3": "None"}}
-    )
-
-    db.inventory.update_many(
-    {"$or" : [
-        {"sl2": {"$exists": False}},
-        {"sl2": None},
-    ]},
-    {"$set": {"sl2": "None", "sp2": "None", "sl3": "None", "sp3": "None"}}
-    )
-
-    db.inventory.update_many(
-    {"$or" : [
-        {"partner": {"$exists": False}},
-        {"partner": None},
-    ]},
-    {"$set": {"partner": "None"}}
-    )
-
 @app.route('/view_students', methods=['POST', 'GET'])
 def students():
     update()
@@ -189,6 +164,55 @@ if not app.debug:
     file_handler.setLevel(logging.INFO)
     app.logger.addHandler(file_handler)
     app.logger.info('errors')
+
+def update():
+    db.inventory.update_many(
+    {"$or" : [
+    {"ll2": {"$exists": False}},
+    {"ll2": None},
+    ]},
+    {"$set": {"ll2": "None", "lp2": "None", "ll3": "None", "lp3": "None"}}
+    )
+
+    db.inventory.update_many(
+    {"$or" : [
+    {"ll3": {"$exists": False}},
+    {"ll3": None},
+    ]},
+    {"$set": {"ll3": "None", "lp3": "None"}}
+    )
+
+    db.inventory.update_many(
+    {"$or" : [
+    {"sl2": {"$exists": False}},
+    {"sl2": None},
+    ]},
+    {"$set": {"sl2": "None", "sp2": "None", "sl3": "None", "sp3": "None"}}
+    )
+
+    db.inventory.update_many(
+    {"$or" : [
+    {"sl3": {"$exists": False}},
+    {"sl3": None},
+    ]},
+    {"$set": {"sl3": "None", "sp3": "None"}}
+    )
+
+    db.inventory.update_many(
+    {"$or" : [
+        {"partner": {"$exists": False}},
+        {"partner": None},
+    ]},
+    {"$set": {"partner": "None"}}
+    )
+
+    db.inventory.update_many(
+    {"$or" : [
+        {"partner": {"$exists": False}},
+        {"partner": None},
+    ]},
+    {"$set": {"partner": "None"}}
+    )
 
 #----------------------------------------------------------------------------#
 # Launch.
