@@ -92,6 +92,13 @@ def update():
     ]},
     {"$set": {"sl2": "None"}}
     )
+    db.inventory.update_many(
+    {"$or" : [
+        {"partner": {"$exists": False}},
+        {"partner": None},
+    ]},
+    {"$set": {"partner": "None"}}
+    )
 
 @app.route('/view_students', methods=['POST', 'GET'])
 def students():
