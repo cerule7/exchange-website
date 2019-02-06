@@ -95,6 +95,7 @@ def update():
 
 @app.route('/view_students', methods=['POST', 'GET'])
 def students():
+    update()
     rows = db.inventory.find({})
     rowslist = []
     for r in rows:
