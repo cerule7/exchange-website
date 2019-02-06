@@ -60,7 +60,38 @@ def signup():
     if request.method == 'POST': #successful form post
         results = request.get_json()
         db.inventory.insert(results) #load form results into mongodb
+        update()
     return render_template('pages/register.html')
+
+def update():
+    db.inventory.update_many(
+    {"$or" : [
+        {"ll2": {"$exists": False}},
+        {"ll2": None},
+    ]},
+    {"$set": {"ll2": "None"}}
+    )
+    db.inventory.update_many(
+    {"$or" : [
+        {"ll3": {"$exists": False}},
+        {"ll3": None},
+    ]},
+    {"$set": {"ll3": "None"}}
+    )
+    db.inventory.update_many(
+    {"$or" : [
+        {"sl3": {"$exists": False}},
+        {"sl3": None},
+    ]},
+    {"$set": {"sl3": "None"}}
+    )
+    db.inventory.update_many(
+    {"$or" : [
+        {"sl2": {"$exists": False}},
+        {"sl2": None},
+    ]},
+    {"$set": {"sl2": "None"}}
+    )
 
 @app.route('/view_students', methods=['POST', 'GET'])
 def students():
