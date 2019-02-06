@@ -69,10 +69,7 @@ def update():
         {"ll2": {"$exists": False}},
         {"ll2": None},
     ]},
-    {"$set": {"ll2": "None"}},
-    {"$set": {"ll3": "None"}},
-    {"$set": {"lp2": "None"}},
-    {"$set": {"lp3": "None"}}
+    {"$set": {"ll2": "None", "lp2": "None", "ll3": "None", "lp3": "None"}}
     )
 
     db.inventory.update_many(
@@ -80,10 +77,7 @@ def update():
         {"sl2": {"$exists": False}},
         {"sl2": None},
     ]},
-    {"$set": {"sl2": "None"}},
-    {"$set": {"sp2": "None"}},
-    {"$set": {"sl3": "None"}},
-    {"$set": {"sp3": "None"}}
+    {"$set": {"sl2": "None", "sp2": "None", "sl3": "None", "sp3": "None"}}
     )
 
     db.inventory.update_many(
