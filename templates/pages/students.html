@@ -16,13 +16,15 @@
 <body>
 
   <p> Click the arrows next to each column to sort pairs; click the ≡ icon to search for terms. </p>
+  <p> To remove students' partners, check the boxes next to the students' records and click the 'Remove Partners' button. </p>
+  <p> To delete students from the database, check the boxes next to the students' records and click the 'Delete Students' button. </p>
 
   <div id="myGrid" style="height:100%; width:100%;" class="ag-theme-balham"></div>
 
   <script type="text/javascript" charset="utf-8">
     // specify the columns
     var columnDefs = [
-      {headerName: "Name", field: "name", sortable: true, filter: true, sort: 'asc', unSortIcon: true},
+      {headerName: "Name", field: "name", sortable: true, filter: true, sort: 'asc', unSortIcon: true, checkboxSelection: true},
       {headerName: "Class", field: "year", sortable: true, filter: true, unSortIcon: true},
       {headerName: "Email", field: "email", sortable: true, filter: true, unSortIcon: true},
       {headerName: "Sharing Languages", field: "share_langs", sortable: true, filter: true, unSortIcon: true},
@@ -40,7 +42,8 @@
       },
       columnDefs: columnDefs,
       rowData: rowData,
-      onFirstDataRendered: autoSizeAll
+      onFirstDataRendered: autoSizeAll,
+      rowSelection: 'multiple'
     };
 
   // lookup the container we want the Grid to use
@@ -58,6 +61,50 @@
 	}
 
   </script>
+
+  <p></p>
+  <p> <button onclick="removePartners()">Remove Partners</button> <button onclick="deleteStudents()">Delete Students</button> </p>
+
+	  <script type="text/javascript">
+	   function removePartners() {
+	       var selectedNodes = gridOptions.api.getSelectedNodes()  
+	       var result = selectedNodes.map(function(node) { console.log(node.data); return node.data })
+
+	       names = ""
+ 		   result.forEach(function(obj) { names += obj.name + '\n'});
+ 		   
+ 		   userConfirm = window.confirm("Do you want to remove these students' partners? \n\n" + names);
+	       if(userConfirm == true) {
+	       	   var xhr = new XMLHttpRequest();
+		       xhr.open("POST", "http://127.0.0.1:5000/view_students"); 
+		      // xhr.open("POST", "https://rutgers-language-exchange.herokuapp.com/view_students");
+		       xhr.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
+		       // send the collected data as JSON
+		       xhr.send(JSON.stringify(result));
+		       location.reload();
+	   	   }
+	   }
+
+	   function deleteStudents() {
+	       var selectedNodes = gridOptions.api.getSelectedNodes()  
+	       var result = selectedNodes.map(function(node) { console.log(node.data); return node.data })
+	      
+	       names = ""
+ 		   result.forEach(function(obj) { names += obj.name + '\n'});
+
+	       userConfirm = window.confirm('Do you want to delete these students? \n\n' + names);
+	       if(userConfirm == true) {
+		       var xhr = new XMLHttpRequest();
+		       xhr.open("PUT", "http://127.0.0.1:5000/view_students"); 
+		      // xhr.open("POST", "https://rutgers-language-exchange.herokuapp.com/view_students");
+		       xhr.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
+		       // send the collected data as JSON
+		       xhr.send(JSON.stringify(result));
+		       location.reload();
+	   	   }
+	   }
+	  </script>
+
 </body>
 
 {% endblock %}

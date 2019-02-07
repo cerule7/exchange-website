@@ -63,8 +63,22 @@ def signup():
         update()
     return render_template('pages/register.html')
 
-@app.route('/view_students', methods=['POST', 'GET'])
+@app.route('/view_students', methods=['POST', 'GET', 'PUT'])
 def students():
+    #remove partners
+    if request.method == 'POST':
+        results = request.get_json()
+        for r in results:
+            db.inventory.update(
+               {"name": r['name']},
+               {"$set": {"partner": "None"}}
+            )
+    if request.method == 'PUT':
+        results = request.get_json()
+        for r in results:
+            db.inventory.delete_one(
+               {"name": r['name']}
+            )
     update()
     rows = db.inventory.find({})
     rowslist = []
@@ -79,7 +93,7 @@ def students():
         #     has_p = 'No'
         student = {
         'name': r['name'],
-        'year' : r['year'],
+        'year': r['year'],
         'email': r['email'],
         'learn_langs': make_string(llist),
         'share_langs': make_string(slist),
