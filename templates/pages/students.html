@@ -96,7 +96,7 @@
 	       if(userConfirm == true) {
 		       var xhr = new XMLHttpRequest();
 		      // xhr.open("PUT", "http://127.0.0.1:5000/view_students"); 
-		       xhr.open("POST", "https://rutgers-language-exchange.herokuapp.com/view_students");
+		       xhr.open("PUT", "https://rutgers-language-exchange.herokuapp.com/view_students");
 		       xhr.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
 		       // send the collected data as JSON
 		       xhr.send(JSON.stringify(result));
