@@ -29,7 +29,7 @@ def canMatch(s, ss): #checks if two students can share/learn from each other
 	return langs
 
 def canLearn(s, lang):
-	return (lang in s.learn_langs and lang != 'None' and s.learn_langs.get(lang) != 'beginner')
+	return (lang in s.learn_langs and lang != 'None')
 
 def canShare(s, lang):
 	return (lang in s.share_langs and (s.share_langs.get(lang) == 'fluent' or s.share_langs.get(lang) == 'advanced'))
