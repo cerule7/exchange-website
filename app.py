@@ -67,25 +67,26 @@ def signup():
 def students():
     if request.method == 'PUT':
         results = request.get_json()
-        if results[0].status == 'remove':
+        header = results.pop(0)
+        if header['status'] == 'remove':
             for r in results:
                 db.inventory.update(
                    {"name": r['name']},
                    {"$set": {"partner": "None"}}
                 )
-        if results[0].status == 'correct':
+        if header['status'] == 'correct':
             for r in results:
                 db.inventory.update(
                    {"name": r['name']},
                    {"$set": {"placement": "Correct"}}
                 )
-        if results[0].status == 'incorrect':
+        if header['status'] == 'incorrect':
             for r in results:
                 db.inventory.update(
                    {"name": r['name']},
                    {"$set": {"placement": "Incorrect"}}
                 )
-        if results[0].status == 'delete':
+        if header['status'] == 'delete':
             for r in results:
                 db.inventory.delete_one(
                    {"name": r['name']}
