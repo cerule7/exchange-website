@@ -30,7 +30,7 @@
       {headerName: "Sharing Languages", field: "share_langs", sortable: true, filter: true, unSortIcon: true},
       {headerName: "Learning Languages", field: "learn_langs", sortable: true, filter: true, unSortIcon: true},
       {headerName: "Partner", field: "partner", sortable: true, filter: true, unSortIcon: true},
-      {headerName: "Placement Status", field: "placement", sortable: true, filter: true, unSortIcon: true},
+      {headerName: "Placement", field: "placement", sortable: true, filter: true, unSortIcon: true},
     ];
     
     // specify the data
@@ -77,7 +77,7 @@
  		   userConfirm = window.confirm("Do you want to remove these students' partners? \n\n" + names);
 	       if(userConfirm == true) {
 	       	   var xhr = new XMLHttpRequest();
-		      // xhr.open("POST", "http://127.0.0.1:5000/view_students"); 
+		     //  xhr.open("PUT", "http://127.0.0.1:5000/view_students"); 
 		       xhr.open("PUT", "https://rutgers-language-exchange.herokuapp.com/view_students");
 		       xhr.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
 		       // send the collected data as JSON
@@ -97,7 +97,7 @@
 	 		   userConfirm = window.confirm("Do you want to mark these students' placement as correct? \n\n" + names);
 		       if(userConfirm == true) {
 		       	   var xhr = new XMLHttpRequest();
-			      // xhr.open("POST", "http://127.0.0.1:5000/view_students"); 
+			       //xhr.open("PUT", "http://127.0.0.1:5000/view_students"); 
 			       xhr.open("PUT", "https://rutgers-language-exchange.herokuapp.com/view_students");
 			       xhr.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
 			       // send the collected data as JSON
@@ -117,7 +117,7 @@
 	 		   userConfirm = window.confirm("Do you want to mark these students' placement as incorrect? \n\n" + names);
 		       if(userConfirm == true) {
 		       	   var xhr = new XMLHttpRequest();
-			      // xhr.open("POST", "http://127.0.0.1:5000/view_students"); 
+			     //  xhr.open("PUT", "http://127.0.0.1:5000/view_students"); 
 			       xhr.open("PUT", "https://rutgers-language-exchange.herokuapp.com/view_students");
 			       xhr.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
 			       // send the collected data as JSON
@@ -137,7 +137,7 @@
 	       userConfirm = window.confirm('Do you want to delete these students? \n\n' + names);
 	       if(userConfirm == true) {
 		       var xhr = new XMLHttpRequest();
-		      // xhr.open("PUT", "http://127.0.0.1:5000/view_students"); 
+		    //  xhr.open("PUT", "http://127.0.0.1:5000/view_students"); 
 		       xhr.open("PUT", "https://rutgers-language-exchange.herokuapp.com/view_students");
 		       xhr.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
 		       // send the collected data as JSON
