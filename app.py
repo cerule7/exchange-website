@@ -83,10 +83,12 @@ def students():
     rows = db.inventory.find({})
     rowslist = []
     for r in rows:
-        llist = [r['ll1'], r['ll2'], r['ll3']].sort()
+        llist = [r['ll1'], r['ll2'], r['ll3']]
         llist[:] =  [x for x in llist if x != 'None']
-        slist = [r['sl1'], r['sl2'], r['sl3']].sort()
+        llist.sort()
+        slist = [r['sl1'], r['sl2'], r['sl3']]
         slist[:] =  [x for x in slist if x != 'None']
+        slist.sort()
         student = {
         'name': r['name'],
         'year': r['year'],
