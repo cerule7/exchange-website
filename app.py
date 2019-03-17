@@ -83,21 +83,16 @@ def students():
     rows = db.inventory.find({})
     rowslist = []
     for r in rows:
-        llist = [r['ll1'], r['ll2'], r['ll3']]
+        llist = [r['ll1'], r['ll2'], r['ll3']].sort()
         llist[:] =  [x for x in llist if x != 'None']
-        llist.sort()
-        slist = [r['sl1'], r['sl2'], r['sl3']]
+        slist = [r['sl1'], r['sl2'], r['sl3']].sort()
         slist[:] =  [x for x in slist if x != 'None']
-        slist.sort()
-        # if(r['prevp'] == 'did_not'):
-        #     has_p = 'No'
         student = {
         'name': r['name'],
         'year': r['year'],
-        'email': r['email'],
+        'ruid': r['ruid'],
         'learn_langs': make_string(llist),
         'share_langs': make_string(slist),
-        # 'prev_p': has_p,
         'partner': r['partner']
         }
         rowslist.append(student)
