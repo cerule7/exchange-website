@@ -63,22 +63,33 @@ def signup():
         update()
     return render_template('pages/register.html')
 
-@app.route('/view_students', methods=['POST', 'GET', 'PUT'])
+@app.route('/view_students', methods=['GET', 'PUT'])
 def students():
-    #remove partners
-    if request.method == 'POST':
-        results = request.get_json()
-        for r in results:
-            db.inventory.update(
-               {"name": r['name']},
-               {"$set": {"partner": "None"}}
-            )
     if request.method == 'PUT':
         results = request.get_json()
-        for r in results:
-            db.inventory.delete_one(
-               {"name": r['name']}
-            )
+        if results[0].status == 'remove':
+            for r in results:
+                db.inventory.update(
+                   {"name": r['name']},
+                   {"$set": {"partner": "None"}}
+                )
+        if results[0].status == 'correct':
+            for r in results:
+                db.inventory.update(
+                   {"name": r['name']},
+                   {"$set": {"placement": "Correct"}}
+                )
+        if results[0].status == 'incorrect':
+            for r in results:
+                db.inventory.update(
+                   {"name": r['name']},
+                   {"$set": {"placement": "Incorrect"}}
+                )
+        if results[0].status == 'delete':
+            for r in results:
+                db.inventory.delete_one(
+                   {"name": r['name']}
+                )
     update()
     rows = db.inventory.find({})
     rowslist = []
@@ -95,7 +106,8 @@ def students():
         'ruid': r['ruid'],
         'learn_langs': make_string(llist),
         'share_langs': make_string(slist),
-        'partner': r['partner']
+        'partner': r['partner'],
+        'placement': r['placement']
         }
         rowslist.append(student)
     return render_template('pages/students.html', rows=rowslist)
@@ -223,6 +235,14 @@ def update():
         {"partner": None},
     ]},
     {"$set": {"partner": "None"}}
+    )
+
+    db.inventory.update_many(
+    {"$or" : [
+        {"placement": {"$exists": False}},
+        {"placement": None},
+    ]},
+    {"$set": {"placement": "Unverified"}}
     )
 
 #----------------------------------------------------------------------------#

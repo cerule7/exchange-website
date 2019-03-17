@@ -30,6 +30,7 @@
       {headerName: "Sharing Languages", field: "share_langs", sortable: true, filter: true, unSortIcon: true},
       {headerName: "Learning Languages", field: "learn_langs", sortable: true, filter: true, unSortIcon: true},
       {headerName: "Partner", field: "partner", sortable: true, filter: true, unSortIcon: true},
+      {headerName: "Placement Status", field: "placement", sortable: true, filter: true, unSortIcon: true},
     ];
     
     // specify the data
@@ -63,33 +64,76 @@
   </script>
 
   <p></p>
-  <p> <button onclick="removePartners()">Remove Partners</button> <button onclick="deleteStudents()">Delete Students</button> </p>
+  <p> <button onclick="removePartners()">Remove Partners</button> <button onclick="deleteStudents()">Delete Students</button> <button onclick="markCorrect()">Mark Placement As Correct</button> <button onclick="markIncorrect()">Mark Placement As Incorrect</button></p>
 
 	  <script type="text/javascript">
 	   function removePartners() {
-	       var selectedNodes = gridOptions.api.getSelectedNodes()  
-	       var result = selectedNodes.map(function(node) { console.log(node.data); return node.data })
-
-	       names = ""
+	       var selectedNodes = gridOptions.api.getSelectedNodes(); 
+	       var result = selectedNodes.map(function(node) { console.log(node.data); return node.data });
+	       console.log(result);
+	       names = "";
  		   result.forEach(function(obj) { names += obj.name + '\n'});
 
  		   userConfirm = window.confirm("Do you want to remove these students' partners? \n\n" + names);
 	       if(userConfirm == true) {
 	       	   var xhr = new XMLHttpRequest();
 		      // xhr.open("POST", "http://127.0.0.1:5000/view_students"); 
-		       xhr.open("POST", "https://rutgers-language-exchange.herokuapp.com/view_students");
+		       xhr.open("PUT", "https://rutgers-language-exchange.herokuapp.com/view_students");
 		       xhr.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
 		       // send the collected data as JSON
+		       result.unshift({'status':'remove'});
 		       xhr.send(JSON.stringify(result));
 		       location.reload();
 	   	   }
 	   }
 
+		<script type="text/javascript">
+		   function markCorrect() {
+		       var selectedNodes = gridOptions.api.getSelectedNodes(); 
+		       var result = selectedNodes.map(function(node) { console.log(node.data); return node.data });
+		       console.log(result);
+		       names = "";
+	 		   result.forEach(function(obj) { names += obj.name + '\n'});
+
+	 		   userConfirm = window.confirm("Do you want to mark these students' placement as correct? \n\n" + names);
+		       if(userConfirm == true) {
+		       	   var xhr = new XMLHttpRequest();
+			      // xhr.open("POST", "http://127.0.0.1:5000/view_students"); 
+			       xhr.open("PUT", "https://rutgers-language-exchange.herokuapp.com/view_students");
+			       xhr.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
+			       // send the collected data as JSON
+			       result.unshift({'status':'correct'});
+			       xhr.send(JSON.stringify(result));
+			       location.reload();
+		   	   }
+		}
+
+		<script type="text/javascript">
+		   function markIncorrect() {
+		       var selectedNodes = gridOptions.api.getSelectedNodes(); 
+		       var result = selectedNodes.map(function(node) { console.log(node.data); return node.data });
+		       console.log(result);
+		       names = "";
+	 		   result.forEach(function(obj) { names += obj.name + '\n'});
+
+	 		   userConfirm = window.confirm("Do you want to mark these students' placement as incorrect? \n\n" + names);
+		       if(userConfirm == true) {
+		       	   var xhr = new XMLHttpRequest();
+			      // xhr.open("POST", "http://127.0.0.1:5000/view_students"); 
+			       xhr.open("PUT", "https://rutgers-language-exchange.herokuapp.com/view_students");
+			       xhr.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
+			       // send the collected data as JSON
+			       result.unshift({'status':'incorrect'});
+			       xhr.send(JSON.stringify(result));
+			       location.reload();
+		   	   }
+		}
+
 	   function deleteStudents() {
-	       var selectedNodes = gridOptions.api.getSelectedNodes()  
-	       var result = selectedNodes.map(function(node) { console.log(node.data); return node.data })
+	       var selectedNodes = gridOptions.api.getSelectedNodes();  
+	       var result = selectedNodes.map(function(node) { console.log(node.data); return node.data });
 	      
-	       names = ""
+	       names = "";
  		   result.forEach(function(obj) { names += obj.name + '\n'});
 
 	       userConfirm = window.confirm('Do you want to delete these students? \n\n' + names);
@@ -99,6 +143,7 @@
 		       xhr.open("PUT", "https://rutgers-language-exchange.herokuapp.com/view_students");
 		       xhr.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
 		       // send the collected data as JSON
+		       result.unshift({'status':'delete'});
 		       xhr.send(JSON.stringify(result));
 		       location.reload();
 	   	   }
