@@ -3,6 +3,7 @@
 #----------------------------------------------------------------------------#
 
 from flask import Flask, render_template, request
+from flask_basicauth import BasicAuth
 # from flask.ext.sqlalchemy import SQLAlchemy
 import logging
 from logging import Formatter, FileHandler
@@ -16,6 +17,10 @@ from alg import *
 
 app = Flask(__name__)
 app.config.from_object('config')
+app.config['BASIC_AUTH_USERNAME'] = 'langadmin'
+app.config['BASIC_AUTH_PASSWORD'] = 'rutgers4'
+
+basic_auth = BasicAuth(app)
 
 #open mongodb connection
 client = MongoClient("mongodb+srv://admin:rutgers1@studentinfo-eoita.azure.mongodb.net/test?retryWrites=true")
@@ -46,7 +51,6 @@ def login_required(test):
 # Controllers.
 #----------------------------------------------------------------------------#
 
-
 @app.route('/')
 def home():
     return render_template('pages/home.html')
@@ -54,7 +58,7 @@ def home():
 @app.route('/about')
 def about():
     return render_template('pages/about.html')
- 
+
 @app.route('/signup', methods=['POST', 'GET'])
 def signup():
     if request.method == 'POST': #successful form post
@@ -64,6 +68,7 @@ def signup():
     return render_template('pages/register.html')
 
 @app.route('/view_students', methods=['GET', 'PUT'])
+@basic_auth.required
 def students():
     if request.method == 'PUT':
         results = request.get_json()
@@ -122,8 +127,8 @@ def make_string(langs):
             res += langs[i]
     return res
 
-
 @app.route('/make_pairs', methods=['POST', 'GET'])
+@basic_auth.required
 def make():
     if request.method == 'POST':
         results = request.get_json()
@@ -151,16 +156,16 @@ def make():
         pairlist.append(p)
     return render_template('pages/pairs.html', pairs=pairlist)
 
-@app.route('/login')
-def login():
-    form = LoginForm(request.form)
-    return render_template('forms/login.html', form=form)
 
 @app.route('/register')
 def register():
     form = RegisterForm(request.form)
     return render_template('forms/register.html', form=form)
 
+@app.route('/login', methods=['GET'])
+def login():
+    form = LoginForm(request.form)
+    return render_template('forms/login.html', form=form)
 
 @app.route('/forgot')
 def forgot():
