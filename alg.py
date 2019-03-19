@@ -143,8 +143,6 @@ def make_pairs():
 			l = canMatch(s, ss)
 			if(s != ss and len(l) != 0):
 				G.add_edge(s, ss, weight=weight(s, ss))
-				print(s.name + " & " + ss.name + " WEIGHT : \n")
-				print(weight(s, ss))
 
 	#s = sorted(max_weight_matching(G))
 	#print('{' + ', '.join(map(lambda t: ': '.join(map(repr, t)), s)) + '}')
