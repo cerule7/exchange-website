@@ -3,12 +3,16 @@ from networkx.algorithms.matching import max_weight_matching
 from pymongo import MongoClient
 
 class Student:
-	def __init__(self, name, share_langs, learn_langs, prev_part, partner):
+	def __init__(self, name, share_langs, learn_langs, prev_part, denied, creative, flexible, major, partner):
 		self.name = name
 		self.share_langs = share_langs
 		self.learn_langs = learn_langs
 		self.prev_part = prev_part
+		self.denied = denied
+		self.creative = creative
+		self.flexible = flexible
 		self.partner = partner
+		self.major = major
 
 class Pair:
 	def __init__(self, student1, student2):
@@ -18,12 +22,18 @@ class Pair:
 		self.language1 = langs[0]
 		self.language2 = langs[1]
 
+stemCluster = ['Genetics', 'Statistics', 'Microbiology', 'Geology', 'Ecology', 'Biological Sciences', 'Exercise Science', 'Cognitive Science', 'Computer Science', 'Mathematics', 'Physics', 'Biology', 'Chemistry', 'Chemical Engineering', 'Materials Science', 'Aerospace Engineering', 'Mechanical Engineering', 'Electrical Engineering', 'Environmental Engineering', 'Biomedical Engineering', 'Civil Engineering']
+humanitiesCluster = ['Philosophy', 'Religion', 'Russian', 'Journalism', 'English', 'Chinese', 'Korean', 'Classics', 'Comparitive Literature', 'French', 'Cultural French', 'German', 'Spanish', 'Italian', 'Japanese', 'Portuguese', 'History', 'Law', 'European Studies', 'Middle Eastern Studies', 'Medieval Studies', 'American Studies', 'Jewish Studies', 'Italian Studies', 'German Studies']
+businessCluster = ['Economics', 'BAIT', 'Accounting', 'Finance', 'Marketing', 'Human Resource Management', 'Supply Chain Management']
+artsCluster = ['Dance', 'Art', 'Music', 'Theater', 'Art History', 'Cinema Studies']
+socialScienceCluster = ['Criminal Justice', 'Cognitive Science', 'Linguistics', 'Communication', 'Sociology', 'Geography', 'Anthropology', 'Political Science']
+
 def canMatch(s, ss): #checks if two students can share/learn from each other
 	langs = [] 
 	for l in s.learn_langs:
-		if canLearn(s, l) and canShare(ss, l):
+		if l != 'None' and canLearn(s, l) and canShare(ss, l):
 			for j in ss.learn_langs:
-				if j != l and canLearn(ss, j) and canShare(s, j):
+				if j != l and j != 'None' and canLearn(ss, j) and canShare(s, j):
 					langs.append(j)
 					langs.append(l)
 	return langs
@@ -34,13 +44,74 @@ def canLearn(s, lang):
 def canShare(s, lang):
 	return (lang in s.share_langs and (s.share_langs.get(lang) == 'fluent' or s.share_langs.get(lang) == 'advanced'))
 
+
 def weight(s, ss): #adds +2 weight for each partner who has not previously participated 
-	total = 1 #default
-	if(s.prev_part == 'did_not'):
-		total += 2
-	if(ss.prev_part == 'did_not'):
-		total += 2
-	return total
+	#start at 0
+	weight = 0
+	common_langs = canMatch(s, ss)
+
+	for language in common_langs:
+		#if 1st choice += 75, if 2nd choice +37
+		if(list(s.share_langs)[0] == language):
+			weight += 75
+		elif(list(s.share_langs)[1] == language):
+			weight += 37
+		if(list(ss.share_langs)[0] == language):
+			weight += 75
+		elif(list(ss.share_langs)[1] == language):
+			weight += 37
+		if(list(s.learn_langs)[0] == language):
+			weight += 75
+		elif(list(s.learn_langs)[1] == language):
+			weight += 37
+		if(list(ss.learn_langs)[0] == language):
+			weight += 75
+		elif(list(ss.learn_langs)[1] == language):
+			weight += 37
+
+	#bonus for being denied or not previously participating
+	if(s.denied == 'unable'):
+		weight += 350
+	elif(s.prev_part == 'did_not'):
+		weight += 125
+	if(ss.denied == 'unable'):
+		weight += 350
+	elif(ss.prev_part == 'did_not'):
+		weight += 125
+
+	rate1diff = abs(int(s.creative) - int(ss.creative))
+	if rate1diff == 0:
+		weight += 49
+	elif rate1diff == 1:
+		weight += 39
+	elif rate1diff == 2:
+		weight += 26
+	elif rate1diff == 3:
+		weight += 13
+
+	rate2diff = abs(int(s.flexible) - int(ss.flexible))
+	if rate2diff == 0:
+		weight += 49
+	elif rate2diff == 1:
+		weight += 39
+	elif rate2diff == 2:
+		weight += 26
+	elif rate2diff == 3:
+		weight += 13
+
+	#+10 for majors in the same cluster
+	if(s.major in stemCluster and ss.major in stemCluster):
+		weight += 10
+	elif(s.major in businessCluster and ss.major in businessCluster):
+		weight += 10
+	elif(s.major in artsCluster and ss.major in artsCluster):
+		weight += 10
+	elif(s.major in humanitiesCluster and ss.major in humanitiesCluster):
+		weight += 10
+	elif(s.major in socialScienceCluster and ss.major in socialScienceCluster):
+		weight += 10
+
+	return round((weight / 1108), 4) + 3
 
 def make_pairs():
 	#creates connection to mongodb database
@@ -62,7 +133,7 @@ def make_pairs():
 	        row['ll2']: row['lp2'],
 	        row['ll3']: row['lp3']
 	    }
-	    students.append(Student(row['name'], share_langs, learn_langs, row['prevp'], row['partner']))
+	    students.append(Student(row['name'], share_langs, learn_langs, row['prevp'], row['unableprev'], row['rate1'], row['rate2'], row['majors'], row['partner']))
 
 	G = Graph()
 
@@ -72,6 +143,8 @@ def make_pairs():
 			l = canMatch(s, ss)
 			if(s != ss and len(l) != 0):
 				G.add_edge(s, ss, weight=weight(s, ss))
+				print(s.name + " & " + ss.name + " WEIGHT : \n")
+				print(weight(s, ss))
 
 	#s = sorted(max_weight_matching(G))
 	#print('{' + ', '.join(map(lambda t: ': '.join(map(repr, t)), s)) + '}')

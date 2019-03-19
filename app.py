@@ -237,10 +237,18 @@ def update():
 
     db.inventory.update_many(
     {"$or" : [
-        {"partner": {"$exists": False}},
-        {"partner": None},
+        {"rate1": {"$exists": False}},
+        {"rate1": None},
     ]},
-    {"$set": {"partner": "None"}}
+    {"$set": {"rate1": "3"}}
+    )
+
+    db.inventory.update_many(
+    {"$or" : [
+        {"rate2": {"$exists": False}},
+        {"rate2": None},
+    ]},
+    {"$set": {"rate2": "3"}}
     )
 
     db.inventory.update_many(
