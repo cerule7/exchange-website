@@ -149,9 +149,11 @@ def make():
     for pair in pairs:
         langs = pair.language1 + " & " + pair.language2
         names = pair.student1.name + " & " + pair.student2.name
+        weight = pair.weight
         p = {
             'languages' : langs,
-            'names' : names
+            'names' : names,
+            'weight': weight
         }
         pairlist.append(p)
     return render_template('pages/pairs.html', pairs=pairlist)

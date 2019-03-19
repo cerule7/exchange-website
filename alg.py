@@ -15,12 +15,13 @@ class Student:
 		self.major = major
 
 class Pair:
-	def __init__(self, student1, student2):
+	def __init__(self, student1, student2, weight):
 		self.student1 = student1
 		self.student2 = student2
 		langs = canMatch(student1, student2) #the languages they will exchange
 		self.language1 = langs[0]
 		self.language2 = langs[1]
+		self.weight = weight
 
 stemCluster = ['Genetics', 'Statistics', 'Microbiology', 'Geology', 'Ecology', 'Biological Sciences', 'Exercise Science', 'Cognitive Science', 'Computer Science', 'Mathematics', 'Physics', 'Biology', 'Chemistry', 'Chemical Engineering', 'Materials Science', 'Aerospace Engineering', 'Mechanical Engineering', 'Electrical Engineering', 'Environmental Engineering', 'Biomedical Engineering', 'Civil Engineering']
 humanitiesCluster = ['Philosophy', 'Religion', 'Russian', 'Journalism', 'English', 'Chinese', 'Korean', 'Classics', 'Comparitive Literature', 'French', 'Cultural French', 'German', 'Spanish', 'Italian', 'Japanese', 'Portuguese', 'History', 'Law', 'European Studies', 'Middle Eastern Studies', 'Medieval Studies', 'American Studies', 'Jewish Studies', 'Italian Studies', 'German Studies']
@@ -135,24 +136,23 @@ def make_pairs():
 	    }
 	    students.append(Student(row['name'], share_langs, learn_langs, row['prevp'], row['unableprev'], row['rate1'], row['rate2'], row['majors'], row['partner']))
 
-	G = Graph()
-
+	pairs = []
 	#adds students who can potentially be partners to the graph
 	for s in students:
 		for ss in students:
 			l = canMatch(s, ss)
-			if(s != ss and len(l) != 0):
-				G.add_edge(s, ss, weight=weight(s, ss))
+			if(s != ss and len(l) != 0 and nodups(pairs, s, ss)):
+				pairs.append(Pair(s, ss, weight=weight(s, ss)))
 
 	#s = sorted(max_weight_matching(G))
 	#print('{' + ', '.join(map(lambda t: ': '.join(map(repr, t)), s)) + '}')
-	
-	pairset = max_weight_matching(G, maxcardinality=True) #result of max weighting algorithm 
-	pairs = []
-	for p in pairset:
-		pairs.append(Pair(p[0], p[1]))
 	return pairs
 
+def nodups(pairlist, s, ss):
+	for p in pairlist:
+		if (p.student1.name == s.name and p.student2.name == ss.name) or (p.student2.name == s.name and p.student1.name == ss.name):
+			return False
+	return True
 
 # pairs = make_pairs()
 # for p in pairs:
