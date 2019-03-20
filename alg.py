@@ -148,6 +148,7 @@ def make_pairs():
 	#print('{' + ', '.join(map(lambda t: ': '.join(map(repr, t)), s)) + '}')
 	return pairs
 
+#removes duplicates from pairlist
 def nodups(pairlist, s, ss):
 	for p in pairlist:
 		if (p.student1.name == s.name and p.student2.name == ss.name) or (p.student2.name == s.name and p.student1.name == ss.name):
