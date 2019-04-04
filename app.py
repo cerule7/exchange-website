@@ -151,7 +151,9 @@ def make():
         names = pair.student1.name + " & " + pair.student2.name
         p = {
             'languages' : langs,
-            'names' : names
+            'names' : names,
+            'prof1' : pair.prof1,
+            'prof2' : pair.prof2
         }
         pairlist.append(p)
     return render_template('pages/pairs.html', pairs=pairlist)

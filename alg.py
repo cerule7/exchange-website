@@ -21,12 +21,26 @@ class Pair:
 		langs = canMatch(student1, student2) #the languages they will exchange
 		self.language1 = langs[0]
 		self.language2 = langs[1]
+		self.prof1 = makeProfs(student1, langs)
+		self.prof2 = makeProfs(student2, langs)
 
 stemCluster = ['Genetics', 'Statistics', 'Microbiology', 'Geology', 'Ecology', 'Biological Sciences', 'Exercise Science', 'Cognitive Science', 'Computer Science', 'Mathematics', 'Physics', 'Biology', 'Chemistry', 'Chemical Engineering', 'Materials Science', 'Aerospace Engineering', 'Mechanical Engineering', 'Electrical Engineering', 'Environmental Engineering', 'Biomedical Engineering', 'Civil Engineering']
 humanitiesCluster = ['Philosophy', 'Religion', 'Russian', 'Journalism', 'English', 'Chinese', 'Korean', 'Classics', 'Comparitive Literature', 'French', 'Cultural French', 'German', 'Spanish', 'Italian', 'Japanese', 'Portuguese', 'History', 'Law', 'European Studies', 'Middle Eastern Studies', 'Medieval Studies', 'American Studies', 'Jewish Studies', 'Italian Studies', 'German Studies']
 businessCluster = ['Economics', 'BAIT', 'Accounting', 'Finance', 'Marketing', 'Human Resource Management', 'Supply Chain Management']
 artsCluster = ['Dance', 'Art', 'Music', 'Theater', 'Art History', 'Cinema Studies']
 socialScienceCluster = ['Criminal Justice', 'Cognitive Science', 'Linguistics', 'Communication', 'Sociology', 'Geography', 'Anthropology', 'Political Science']
+
+def makeProfs(student, langs):
+	result = ""
+	if langs[0] in student.learn_langs:
+		result = result + langs[0] + ": " + student.learn_langs.get(langs[0]) + " & "
+	else: 
+		result = result + langs[0] + ": " + student.share_langs.get(langs[0]) + " & "
+	if langs[1] in student.learn_langs:
+		result = result + langs[1] + ": " + student.learn_langs.get(langs[1])
+	else: 
+		result = result + langs[1] + ": " + student.share_langs.get(langs[1])
+	return result
 
 def canMatch(s, ss): #checks if two students can share/learn from each other
 	langs = [] 
