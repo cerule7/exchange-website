@@ -110,6 +110,7 @@ def students():
         'name': r['name'],
         'year': r['year'],
         'ruid': r['ruid'],
+        'email': r['email'],
         'learn_langs': make_string(llist),
         'share_langs': make_string(slist),
         'partner': r['partner'],
