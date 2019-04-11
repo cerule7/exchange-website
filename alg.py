@@ -68,19 +68,19 @@ def weight(s, ss): #adds +2 weight for each partner who has not previously parti
 		#if 1st choice += 75, if 2nd choice +37
 		if(list(s.share_langs)[0] == language):
 			weight += 75
-		elif(list(s.share_langs)[1] == language):
+		elif(len(list(s.share_langs)) > 1 and list(s.share_langs)[1] == language):
 			weight += 37
 		if(list(ss.share_langs)[0] == language):
 			weight += 75
-		elif(list(ss.share_langs)[1] == language):
+		elif(len(list(ss.share_langs)) > 1 and list(ss.share_langs)[1] == language):
 			weight += 37
 		if(list(s.learn_langs)[0] == language):
 			weight += 75
-		elif(list(s.learn_langs)[1] == language):
+		elif(len(list(s.learn_langs)) > 1 and list(s.learn_langs)[1] == language):
 			weight += 37
 		if(list(ss.learn_langs)[0] == language):
 			weight += 75
-		elif(list(ss.learn_langs)[1] == language):
+		elif(len(list(ss.learn_langs)) > 1 and list(ss.learn_langs)[1] == language):
 			weight += 37
 
 	#bonus for being denied or not previously participating
