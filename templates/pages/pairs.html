@@ -22,6 +22,7 @@
   <script type="text/javascript" charset="utf-8">
     // specify the columns
     var columnDefs = [
+      {valueGetter: 'node.rowIndex'},
       {headerName: "Names", field: "names", sortable: true, filter: true, sort: 'asc', unSortIcon: true, checkboxSelection: true},
       {headerName: "Languages", field: "languages", sortable: true, filter: true, unSortIcon: true},
       {headerName: "Student 1 Proficiency", field: "prof1", sortable: true, filter: true, unSortIcon: true},
