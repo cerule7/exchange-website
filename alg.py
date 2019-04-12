@@ -45,9 +45,9 @@ def makeProfs(student, langs):
 def canMatch(s, ss): #checks if two students can share/learn from each other
 	langs = [] 
 	for l in s.learn_langs:
-		if l != 'None' and canLearn(s, l) and canShare(ss, l):
+		if l != 'None' and canLearn(s, l) and canShare(ss, l) and not bothAreFluent(s, ss, l):
 			for j in ss.learn_langs:
-				if j != l and j != 'None' and canLearn(ss, j) and canShare(s, j):
+				if j != l and j != 'None' and canLearn(ss, j) and canShare(s, j) and not bothAreFluent(s, ss, j):
 					langs.append(j)
 					langs.append(l)
 	return langs
@@ -58,6 +58,8 @@ def canLearn(s, lang):
 def canShare(s, lang):
 	return (lang in s.share_langs and (s.share_langs.get(lang) == 'fluent' or s.share_langs.get(lang) == 'advanced'))
 
+def bothAreFluent(s, ss, lang):
+	return ((s.share_langs.get(lang) == 'fluent' or s.learn_langs.get(lang) == 'fluent') and (ss.share_langs.get(lang) == 'fluent' or ss.learn_langs.get(lang) == 'fluent'))
 
 def weight(s, ss): #adds +2 weight for each partner who has not previously participated 
 	#start at 0
