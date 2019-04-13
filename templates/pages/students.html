@@ -66,13 +66,38 @@
   </script>
 
   <p></p>
-  <p> <button onclick="removePartners()">Remove Partners</button> <button onclick="deleteStudents()">Delete Students</button> <button onclick="markCorrect()">Mark Placement As Correct</button> <button onclick="markIncorrect()">Mark Placement As Incorrect</button></p>
+  <p> <button onclick="removePartners()">Remove Partners</button> <button onclick="deleteStudents()">Delete Students</button> <button onclick="markCorrect()">Mark Placement As Correct</button> <button onclick="markIncorrect()">Mark Placement As Incorrect</button> <button onclick="makePair()">Make Pair</button> </p>
 
 	  <script type="text/javascript">
+
+	  	 function makePair() {
+	       var selectedNodes = gridOptions.api.getSelectedNodes(); 
+	       var result = selectedNodes.map(function(node) { console.log(node.data); return node.data });
+	      
+	       if(result.length != 2){
+	       		window.alert("You can only pair 2 students at a time. Please select only 2 students.");
+	       		return;
+	       }
+
+	       names = "";
+ 		   result.forEach(function(obj) { names += obj.name + '\n'});
+
+ 		   userConfirm = window.confirm("Do you want to pair these students? \n\n" + names);
+	       if(userConfirm == true) {
+	       	   var xhr = new XMLHttpRequest();
+		      // xhr.open("PUT", "http://127.0.0.1:5000/view_students"); 
+		       xhr.open("PUT", "https://rutgers-language-exchange.herokuapp.com/view_students");
+		       xhr.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
+		       // send the collected data as JSON
+		       result.unshift({'status':'pair'});
+		       xhr.send(JSON.stringify(result));
+		       location.reload();
+	   	   }
+	   }
+
 	   function removePartners() {
 	       var selectedNodes = gridOptions.api.getSelectedNodes(); 
 	       var result = selectedNodes.map(function(node) { console.log(node.data); return node.data });
-	       console.log(result);
 	       names = "";
  		   result.forEach(function(obj) { names += obj.name + '\n'});
 
@@ -92,7 +117,6 @@
 		   function markCorrect() {
 		       var selectedNodes = gridOptions.api.getSelectedNodes(); 
 		       var result = selectedNodes.map(function(node) { console.log(node.data); return node.data });
-		       console.log(result);
 		       names = "";
 	 		   result.forEach(function(obj) { names += obj.name + '\n'});
 
@@ -112,7 +136,6 @@
 		   function markIncorrect() {
 		       var selectedNodes = gridOptions.api.getSelectedNodes(); 
 		       var result = selectedNodes.map(function(node) { console.log(node.data); return node.data });
-		       console.log(result);
 		       names = "";
 	 		   result.forEach(function(obj) { names += obj.name + '\n'});
 

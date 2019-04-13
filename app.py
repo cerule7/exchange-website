@@ -73,6 +73,17 @@ def students():
     if request.method == 'PUT':
         results = request.get_json()
         header = results.pop(0)
+        if header['status'] == 'pair':
+            s1 = results[0]['name']
+            s2 = results[1]['name']
+            db.inventory.update(
+               {"name": s1},
+               {"$set": {"partner": s2}}
+            )
+            db.inventory.update(
+               {"name": s2},
+               {"$set": {"partner": s1}}
+            )
         if header['status'] == 'remove':
             for r in results:
                 db.inventory.update(

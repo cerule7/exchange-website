@@ -61,7 +61,7 @@ def canShare(s, lang):
 def bothAreFluent(s, ss, lang):
 	return ((s.share_langs.get(lang) == 'fluent' or s.learn_langs.get(lang) == 'fluent') and (ss.share_langs.get(lang) == 'fluent' or ss.learn_langs.get(lang) == 'fluent'))
 
-def weight(s, ss): #adds +2 weight for each partner who has not previously participated 
+def weight(s, ss): 
 	#start at 0
 	weight = 0
 	common_langs = canMatch(s, ss)
@@ -174,3 +174,4 @@ def make_pairs():
 # for p in pairs:
 # 	print(p.student1.name + " & " + p.student2.name)
 # 	print(p.language1 + " & " + p.language2)
+# print(len(pairs))
