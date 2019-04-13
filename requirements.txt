@@ -8,3 +8,4 @@ Flask==1.0.2
 Flask_WTF==0.14.2
 Fabric==2.4.0
 gunicorn==19.9.0
+dnspython==1.16.0
