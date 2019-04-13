@@ -10,6 +10,7 @@ from logging import Formatter, FileHandler
 from forms import *
 from pymongo import MongoClient
 from alg import *
+from language_data import *
 
 #----------------------------------------------------------------------------#
 # App Config
@@ -66,6 +67,18 @@ def signup():
         db.inventory.insert(results) #load form results into mongodb
         update()
     return render_template('pages/register.html')
+
+@app.route('/learn_data')
+@basic_auth.required
+def gen_learn_chart():
+    gen_learn_pie()
+    return render_template('learn-count-pie.html')
+
+@app.route('/share_data')
+@basic_auth.required
+def gen_share_chart():
+    gen_share_pie()
+    return render_template('share-count-pie.html')
 
 @app.route('/view_students', methods=['GET', 'PUT'])
 @basic_auth.required
