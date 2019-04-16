@@ -67,14 +67,6 @@ def weight(s, ss):
 	common_langs = canMatch(s, ss)
 
 	for language in common_langs:
-		if(s.share_langs.get(language) == 'fluent'): 
-			weight += 100
-		if(ss.share_langs.get(language) == 'fluent'): 
-			weight += 100
-		if(s.learn_langs.get(language) == 'none'):
-			weight -= 100
-		if(ss.learn_langs.get(language) == 'none'):
-			weight -= 100
 		#if 1st choice += 75, if 2nd choice +37
 		if(list(s.share_langs)[0] == language):
 			weight += 75
