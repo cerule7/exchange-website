@@ -67,6 +67,10 @@ def weight(s, ss):
 	common_langs = canMatch(s, ss)
 
 	for language in common_langs:
+		if(s.share_langs.get(language) == 'fluent'): 
+			weight += 100
+		if(ss.share_langs.get(language) == 'fluent'): 
+			weight += 100
 		#if 1st choice += 75, if 2nd choice +37
 		if(list(s.share_langs)[0] == language):
 			weight += 75
@@ -170,8 +174,8 @@ def make_pairs():
 		pairs.append(Pair(p[0], p[1]))
 	return pairs
 
-# pairs = make_pairs()
-# for p in pairs:
-# 	print(p.student1.name + " & " + p.student2.name)
-# 	print(p.language1 + " & " + p.language2)
-# print(len(pairs))
+pairs = make_pairs()
+for p in pairs:
+	print(p.student1.name + " & " + p.student2.name)
+	print(p.language1 + " & " + p.language2)
+print(len(pairs))
