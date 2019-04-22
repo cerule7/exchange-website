@@ -68,9 +68,7 @@ def weight(s, ss):
 
 	for language in common_langs:
 		#if 1st choice += 75, if 2nd choice +37
-		if(s.learn_langs.get(language) != 'beginner' and s.learn_langs.get(language) != 'none'):
-			weight += 500
-		if(ss.learn_langs.get(language) != 'beginner' and ss.learn_langs.get(language) != 'none'):
+		if((s.learn_langs.get(language) != 'beginner' and s.learn_langs.get(language) != 'none') and (ss.learn_langs.get(language) != 'beginner' and ss.learn_langs.get(language) != 'none')):
 			weight += 500
 		if(list(s.share_langs)[0] == language):
 			weight += 75
