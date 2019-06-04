@@ -18,13 +18,13 @@ from language_data import *
 
 app = Flask(__name__)
 app.config.from_object('config')
-app.config['BASIC_AUTH_USERNAME'] = 'langadmin'
-app.config['BASIC_AUTH_PASSWORD'] = 'rutgers4'
+app.config['BASIC_AUTH_USERNAME'] = 'demo'
+app.config['BASIC_AUTH_PASSWORD'] = 'password'
 
 basic_auth = BasicAuth(app)
 
 #open mongodb connection
-client = MongoClient("mongodb+srv://admin:rutgers1@studentinfo-eoita.azure.mongodb.net/test?retryWrites=true")
+client = MongoClient("mongodb+srv://admin:rutgers1@studentinfo-eoita.azure.mongodb.net/demo?retryWrites=true")
 db = client.test
 
 #db = SQLAlchemy(app)
@@ -133,8 +133,8 @@ def students():
         student = {
         'name': r['name'],
         'year': r['year'],
-        'ruid': r['ruid'],
-        'email': r['email'],
+        'ruid': '12345',
+        'email': 'student@rutgers.com',
         'learn_langs': make_string(llist),
         'share_langs': make_string(slist),
         'partner': r['partner'],

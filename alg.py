@@ -131,7 +131,7 @@ def weight(s, ss):
 
 def make_pairs():
 	#creates connection to mongodb database
-	client = MongoClient("mongodb+srv://admin:rutgers1@studentinfo-eoita.azure.mongodb.net/test?retryWrites=true")
+	client = MongoClient("mongodb+srv://admin:rutgers1@studentinfo-eoita.azure.mongodb.net/demo?retryWrites=true")
 	db = client.test
 	
 	rows = db.inventory.find({'partner':'None'})
@@ -169,9 +169,3 @@ def make_pairs():
 	for p in pairset:
 		pairs.append(Pair(p[0], p[1]))
 	return pairs
-
-pairs = make_pairs()
-for p in pairs:
-	print(p.student1.name + " & " + p.student2.name)
-	print(p.language1 + " & " + p.language2)
-print(len(pairs))

@@ -68,9 +68,9 @@
   <p></p>
   <p> <button onclick="removePartners()">Remove Partners</button> <button onclick="deleteStudents()">Delete Students</button> <button onclick="markCorrect()">Mark Placement As Correct</button> <button onclick="markIncorrect()">Mark Placement As Incorrect</button> <button onclick="makePair()">Make Pair</button> </p>
   <br>
-  	<a href="https://rutgers-language-exchange.herokuapp.com/learn_data"> Click here for a pie chart of languages students want to learn! </a>
+  	<a href="https://lang-exchange-demo.herokuapp.com/learn_data"> Click here for a pie chart of languages students want to learn! </a>
   <br>
-    <a href="https://rutgers-language-exchange.herokuapp.com/share_data"> Click here for a pie chart of languages students want to share! </a>
+    <a href="https://lang-exchange-demo.herokuapp.com/share_data"> Click here for a pie chart of languages students want to share! </a>
 
 	  <script type="text/javascript">
 
@@ -109,7 +109,7 @@
 	       if(userConfirm == true) {
 	       	   var xhr = new XMLHttpRequest();
 		     //  xhr.open("PUT", "http://127.0.0.1:5000/view_students"); 
-		       xhr.open("PUT", "https://rutgers-language-exchange.herokuapp.com/view_students");
+		       xhr.open("PUT", "https://lang-exchange-demo.herokuapp.com/view_students");
 		       xhr.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
 		       // send the collected data as JSON
 		       result.unshift({'status':'remove'});
@@ -128,7 +128,7 @@
 		       if(userConfirm == true) {
 		       	   var xhr = new XMLHttpRequest();
 			       //xhr.open("PUT", "http://127.0.0.1:5000/view_students"); 
-			       xhr.open("PUT", "https://rutgers-language-exchange.herokuapp.com/view_students");
+			       xhr.open("PUT", "https://lang-exchange-demo.herokuapp.com/view_students");
 			       xhr.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
 			       // send the collected data as JSON
 			       result.unshift({'status':'correct'});
@@ -147,7 +147,7 @@
 		       if(userConfirm == true) {
 		       	   var xhr = new XMLHttpRequest();
 			     //  xhr.open("PUT", "http://127.0.0.1:5000/view_students"); 
-			       xhr.open("PUT", "https://rutgers-language-exchange.herokuapp.com/view_students");
+			       xhr.open("PUT", "https://lang-exchange-demo.herokuapp.com/view_students");
 			       xhr.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
 			       // send the collected data as JSON
 			       result.unshift({'status':'incorrect'});
@@ -167,7 +167,7 @@
 	       if(userConfirm == true) {
 		       var xhr = new XMLHttpRequest();
 		    //  xhr.open("PUT", "http://127.0.0.1:5000/view_students"); 
-		       xhr.open("PUT", "https://rutgers-language-exchange.herokuapp.com/view_students");
+		       xhr.open("PUT", "https://lang-exchange-demo.herokuapp.com/view_students");
 		       xhr.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
 		       // send the collected data as JSON
 		       result.unshift({'status':'delete'});

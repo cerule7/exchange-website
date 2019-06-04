@@ -3,11 +3,8 @@ from pymongo import MongoClient
 import plotly as py
 import plotly.graph_objs as go
 
-
-client = MongoClient("mongodb+srv://admin:rutgers1@studentinfo-eoita.azure.mongodb.net/test?retryWrites=true")
+client = MongoClient("mongodb+srv://admin:rutgers1@studentinfo-eoita.azure.mongodb.net/demo?retryWrites=true")
 db = client.test
-
-
 
 def gen_learn_pie():
 	rows = db.inventory.find({})
@@ -21,13 +18,13 @@ def gen_learn_pie():
 					d[r[l]] = 1
 
 	data = [go.Pie(
-	            labels= list(d.keys()),
-	            values= list(d.values())
-	    )]
+				labels= list(d.keys()),
+				values= list(d.values())
+		)]
 
 	py.offline.plot({
-	    "data": data,
-	    "layout": go.Layout(title="Languages People Want To Learn")
+		"data": data,
+		"layout": go.Layout(title="Languages People Want To Learn")
 	}, filename='templates/learn-count-pie.html', auto_open=False)
 	print('plot made')
 
@@ -45,11 +42,11 @@ def gen_share_pie():
 					d2[r[l]] = 1
 
 	data = [go.Pie(
-	            labels= list(d2.keys()),
-	            values= list(d2.values())
-	    )]
+				labels= list(d2.keys()),
+				values= list(d2.values())
+		)]
 
 	py.offline.plot({
-	    "data": data,
-	    "layout": go.Layout(title="Languages People Want To Share")
+		"data": data,
+		"layout": go.Layout(title="Languages People Want To Share")
 	}, filename='templates/share-count-pie.html', auto_open=False)
